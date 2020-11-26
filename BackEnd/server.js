@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 //link needed for mongodb cluster
-const myConnectionString = 'mongodb+srv://cathal:admin@cluster0.qrfkd.mongodb.net/movies?retryWrites=true&w=majority';
+const myConnectionString = 'mongodb+srv://admin:Jacob12345@cluster0.wlzsc.mongodb.net/movies?retryWrites=true&w=majority';
 mongoose.connect(myConnectionString, {useNewUrlParser: true});
 
 const Schema = mongoose.Schema;
@@ -75,6 +75,14 @@ app.get('/api/movies/:id', (req,res)=>{
 
     MovieModel.findById(req.params.id, (err, data)=>{
         res.json(data);
+    })
+})
+
+app.delete('/api/movies/:id',(req,res)=>{
+    console.log("Delete Movie: "+ req.params.id);
+
+    MovieModel.findByIdAndDelete(req.params.id,(err, data)=>{
+        res.send(data);
     })
 })
 
