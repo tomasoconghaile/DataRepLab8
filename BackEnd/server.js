@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 //import mongoose
 const mongoose = require('mongoose');
+const path = require('path');
 
 app.use(cors());
 app.use(function(req, res, next) {
@@ -15,7 +16,8 @@ app.use(function(req, res, next) {
     next();
     });
 
-
+app.use(express.static(path.join(__dirname, '../build')));
+app.use('/static', express.static(path.join(__dirname, 'build/static')));
 
 
 // parse application/x-www-form-urlencoded
@@ -78,6 +80,7 @@ app.get('/api/movies/:id', (req,res)=>{
     })
 })
 
+//Deletes a movie
 app.delete('/api/movies/:id',(req,res)=>{
     console.log("Delete Movie: "+ req.params.id);
 
@@ -102,6 +105,10 @@ MovieModel.create({
     res.send('Item Added');
 })
 
+// * Sends baxk the url for the front end no matter what url.  Links above still work tho (api/movies)etc.
+app.get('*', (req, res)=>{
+    res.sendFile(path.join(__dirname+ '/../build/index.html'));
+})
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
